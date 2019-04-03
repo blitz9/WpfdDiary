@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfdDiary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="882.872" Width="379.585">
+    <Window.Resources>
+        <JournalEntryListConverter x:Key="JournalEntryListConverter"/>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical">
+        <Calendar x:Name="calendar"  RenderTransformOrigin="0.648,0.801" FontFamily="Yu Gothic UI Semibold" Foreground="#FFBD3737">
+            <Calendar.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                    <GradientStop Color="#FF2C69EC" Offset="1"/>
+                </LinearGradientBrush>
+            </Calendar.BorderBrush>
+            <Calendar.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFE4EAF0" Offset="0"/>
+                    <GradientStop Color="#FFECF0F4" Offset="0.16"/>
+                    <GradientStop Color="#FFFCFCFD" Offset="0.16"/>
+                    <GradientStop Color="#FF4C81CD" Offset="1"/>
+                </LinearGradientBrush>
+            </Calendar.Background>
+            <Calendar.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2" ScaleY="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Calendar.LayoutTransform>
+        </Calendar>
+        <DataGrid x:Name="tasksGrid" HorizontalAlignment="Center" AutoGenerateColumns="True" VerticalAlignment="Center" Width="372" Height="517" AlternatingRowBackground="White" RowBackground="Gainsboro" >
+
+        </DataGrid>
+    </StackPanel>
 </Window>
