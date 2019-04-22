@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfdDiary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="882.872" Width="379.585">
+        Title="MainWindow" Height="882.872" Width="1290.5"
+        Closing="AppExit" MaxWidth="1290" MaxHeight="882.872">
     <Window.Resources>
         <JournalEntryListConverter x:Key="JournalEntryListConverter"/>
     </Window.Resources>
-    <StackPanel Orientation="Vertical">
-        <Calendar x:Name="calendar"  RenderTransformOrigin="0.648,0.801" FontFamily="Yu Gothic UI Semibold" Foreground="#FFBD3737">
+    <Grid Margin="0,0,2,-21">
+        <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" Foreground="#FFBD3737" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0">
             <Calendar.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFA3AEB9" Offset="0"/>
@@ -36,8 +37,50 @@
                 </TransformGroup>
             </Calendar.LayoutTransform>
         </Calendar>
-        <DataGrid x:Name="tasksGrid" HorizontalAlignment="Center" AutoGenerateColumns="True" VerticalAlignment="Center" Width="372" Height="517" AlternatingRowBackground="White" RowBackground="Gainsboro" >
-
-        </DataGrid>
-    </StackPanel>
+        <DataGrid x:Name="tasksGrid" AutoGenerateColumns="True" AlternatingRowBackground="White" RowBackground="Gainsboro" Margin="364,0,0,23" VerticalContentAlignment="Stretch" FontSize="20"/>
+        <StackPanel Margin="0,332,0,0" Height="518" VerticalAlignment="Top" HorizontalAlignment="Left" Width="364" x:Name="ButtonGrid">
+            <ToggleButton x:Name="IdeasButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#8b00ff" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Идеи" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="WorkButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#0000ff" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Работа" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="StudyButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#42aaff" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Учёба" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="PurchasesButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#008000" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Покупки" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="BirthdayButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#ffff00" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Дни Рождения" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="HouseholdChoresButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#ffa500" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Домашние Дела" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton x:Name="ImportantMatterButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#ff2400" Margin="10,0" Height="70">
+                <StackPanel Orientation="Vertical">
+                    <Image Source="image.png" />
+                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Важные Дела" FontSize="20"/>
+                </StackPanel>
+            </ToggleButton>
+        </StackPanel>
+    </Grid>
 </Window>

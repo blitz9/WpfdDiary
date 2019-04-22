@@ -5,20 +5,44 @@ using System.Runtime.Serialization.Json;
 
 namespace DayTasks
 {
+    enum TaskType
+    {
+        Идеи,
+        Работа,
+        Учёба,
+        Покупки,
+        Дни_Рождения,
+        Домашние_Дела,
+        Важные_Дела,
+    }
+    /*
+     IdeasButton,
+     WorkButton,
+     StudyButton,
+     PurchasesButton,
+     BirthdayButton,
+     household chores,
+     important matter,
+     */
     [DataContract]
     sealed internal class DayTask
     {
         [DataMember]
         public string Name { get; set; }
+
         [DataMember]
         public bool Сompleted { get; set; }
+
         [DataMember]
-        public string Info { get; set; }
+        public TaskType Type { get; set; }
+
+        [DataMember]
+        public string[] Info { get; set; }
     }
 
     sealed internal class TaskList
     {
-        public List<DayTask> tasks { get; set;}
+        public List<DayTask> tasks { get; set; }
 
         public void SaveTaskList(string fileName)
         {
@@ -44,7 +68,7 @@ namespace DayTasks
                 {
                     tasks = new List<DayTask>();
                 }
-                
+
             }
         }
 
