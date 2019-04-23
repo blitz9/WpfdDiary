@@ -1,7 +1,7 @@
-﻿<Application x:Class="WpfdDiary.App"
+﻿<Application x:Class="WpfDiary.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WpfdDiary"
+             xmlns:local="clr-namespace:WpfDiary"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

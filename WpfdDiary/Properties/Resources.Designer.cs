@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WpfdDiary.Properties
+namespace WpfDiary.Properties
 {
 
 
