@@ -45,43 +45,43 @@
         
         <DataGrid x:Name="tasksGrid" AutoGenerateColumns="True" Margin="364,10,0,128" VerticalContentAlignment="Stretch" FontSize="20" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" CellEditEnding="TasksGrid_CellEditEnding"/>
         <StackPanel Margin="0,332,0,0" Height="494" VerticalAlignment="Top" HorizontalAlignment="Left" Width="364" x:Name="ButtonGrid">
-            <ToggleButton x:Name="IdeasButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#8b00ff" Margin="10,0" Height="70">
+            <ToggleButton x:Name="IdeasButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/лампочка.png" Width="81" Height="47"/>
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Идеи" FontSize="30" Width="102" Margin="50,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="WorkButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#0000ff" Margin="10,0" Height="70">
+            <ToggleButton x:Name="WorkButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/работа.png" Width="82" Height="44" RenderTransformOrigin="0.692,0.553"/>
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Работа" FontSize="30" Width="102" Margin="40,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="StudyButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#42aaff" Margin="10,0" Height="70">
+            <ToggleButton x:Name="StudyButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/учёба.png" Height="45" Width="77" />
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Учёба" FontSize="30" Width="102" Margin="50,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="PurchasesButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#008000" Margin="10,0" Height="70">
+            <ToggleButton x:Name="PurchasesButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/покупки.png" Width="77" Height="45" />
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Покупки" FontSize="30" Width="126" Margin="30,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="BirthdayButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#ffff00" Margin="10,0" Height="70">
+            <ToggleButton x:Name="BirthdayButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/дни_рождения.png" Height="50" Width="70" />
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Дни Рождения" FontSize="30" Width="225" Margin="10,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="HouseholdChoresButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#ffa500" Margin="10,0" Height="70">
+            <ToggleButton x:Name="HouseholdChoresButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/домашние_дела.png" Height="50" Width="70" />
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Домашние Дела" FontSize="30" Width="258" Margin="0,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </ToggleButton>
-            <ToggleButton x:Name="ImportantMatterButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Background="#ff2400" Margin="10,0" Height="70">
+            <ToggleButton x:Name="ImportantMatterButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
                 <StackPanel Orientation="Horizontal" Width="344">
                     <Image Source="Resources/важные_дела.png" Height="50" Width="74" />
                     <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Важные Дела" FontSize="30" Width="219" Margin="10,0" HorizontalAlignment="Right"/>

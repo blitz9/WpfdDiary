@@ -17,6 +17,7 @@ namespace WpfDiary
     /// </summary>
     public partial class MainWindow : Window
     {
+        //ресурсы для текущей отображаемой информации
         private static class CalendarInfo
         {
             static public System.DateTime currentDate;
@@ -32,6 +33,7 @@ namespace WpfDiary
             }
         }
 
+        //инициальзация объектов и назначение обработчиков событий
         public MainWindow()
         {
             InitializeComponent();
@@ -49,12 +51,29 @@ namespace WpfDiary
                 button.Click += PressedTypeButton;
             }
 
+            //Здесь вставтлять свои цвета
+            TypeColors.colors[0] = (Color)ColorConverter.ConvertFromString("#CDABFF");
+            TypeColors.colors[1] = (Color)ColorConverter.ConvertFromString("#DEF7FE");
+            TypeColors.colors[2] = (Color)ColorConverter.ConvertFromString("#E7ECFF");
+            TypeColors.colors[3] = (Color)ColorConverter.ConvertFromString("#C3FBD8");
+            TypeColors.colors[4] = (Color)ColorConverter.ConvertFromString("#FDEED9");
+            TypeColors.colors[5] = (Color)ColorConverter.ConvertFromString("#FFFADD");
+            TypeColors.colors[6] = (Color)ColorConverter.ConvertFromString("#FFA8A3");
+
+            var index = 0;
+            foreach (ToggleButton button in ButtonGrid.Children)
+            {
+                button.Background = new SolidColorBrush(TypeColors.colors[index]);
+                index++;
+            }
+
             foreach (TaskType type in Enum.GetValues(typeof(TaskType)))
             {
                 CalendarInfo.typesState[type] = true;
             }
         }
 
+        //событие смены даты
         private void DatesChanged(object sender, RoutedEventArgs e)
         {
             CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
@@ -64,28 +83,16 @@ namespace WpfDiary
             CalendarInfo.currentDate = (System.DateTime)date.SelectedDate;
         }
 
+        //сохранение при выходе
         public void AppExit(object sender, CancelEventArgs e)
         {
             CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
         }
 
-        private void ColorRow(DataGrid dg)
-        {
-            for (int i = 0; i < dg.Items.Count; i++)
-            {
-                DataGridRow row = (DataGridRow)dg.ItemContainerGenerator.ContainerFromIndex(i);
-
-                if (row != null)
-                {
-                    SolidColorBrush brush = new SolidColorBrush(Color.FromRgb(100, 0, 0));
-                    row.Background = brush;
-                }
-            }
-        }
-
+        //изменение отображыемых видов задач
         public void PressedTypeButton(Object sender, EventArgs e)
         {
-            if (sender is System.Windows.Controls.Primitives.ToggleButton button)
+            if (sender is ToggleButton button)
             {
                 switch (button.Name)
                 {
@@ -116,6 +123,7 @@ namespace WpfDiary
             }
         }
 
+        //добавить задачу
         private void AddTask(object sender, RoutedEventArgs e)
         {
 
@@ -131,6 +139,7 @@ namespace WpfDiary
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
+        //удалить выделенные задачи
         private void DeleteTask(object sender, RoutedEventArgs e)
         {
             var selectedTasks = tasksGrid.SelectedItems;
@@ -141,40 +150,28 @@ namespace WpfDiary
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
-
+        //изменились ли значения
         private void TasksGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             CalendarInfo.isChanged = true;
         }
     }
 
+    //раскрашивание строки в зависимости от типов
     public class TypeToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((TaskType)value)
-            {
-                case TaskType.Идеи:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8b00ff"));
-                case TaskType.Работа:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0000ff"));
-                case TaskType.Учёба:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#42aaff"));
-                case TaskType.Покупки:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#008000"));
-                case TaskType.Дни_Рождения:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ffff00"));
-                case TaskType.Домашние_Дела:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ffa500"));
-                case TaskType.Важные_Дела:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ff2400"));
-                default:
-                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
-            }
+            return new SolidColorBrush(TypeColors.colors[(int) value]);
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new Exception("The method or operation is not implemented.");
         }
+    }
+
+    static public class TypeColors
+    {
+        static public Color[] colors = new Color[7];
     }
 }

@@ -7,13 +7,13 @@ namespace DayTasks
 {
     enum TaskType
     {
-        Идеи,
-        Работа,
-        Учёба,
-        Покупки,
-        Дни_Рождения,
-        Домашние_Дела,
-        Важные_Дела,
+        Идеи=0,
+        Работа=1,
+        Учёба=2,
+        Покупки=3,
+        Дни_Рождения=4,
+        Домашние_Дела=5,
+        Важные_Дела=6,
     }
 
     [DataContract]
@@ -36,6 +36,7 @@ namespace DayTasks
     {
         public List<DayTask> tasks { get; set; }
 
+        //сохранить задачи текущего дня в json формат
         public void SaveTaskList(string fileName)
         {
             var jsonFormatter = new DataContractJsonSerializer(typeof(List<DayTask>));
@@ -46,6 +47,7 @@ namespace DayTasks
             }
         }
 
+        //загрузить задачи для текущего дня из json файла
         public void LoadTaskList(string fileName)
         {
             var jsonFormatter = new DataContractJsonSerializer(typeof(List<DayTask>));
