@@ -5,32 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfDiary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="866" Width="1290.5"
-        Closing="AppExit" ResizeMode="NoResize">
+        Title="MainWindow" Height="876" Width="1290.5"
+        Closing="AppExit" Background="#FF959FFD" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
     <Window.Resources>
         <JournalEntryListConverter x:Key="JournalEntryListConverter"/>
         <local:TypeToColorConverter x:Key="TypeToColorConverter"/>
         <Style TargetType="{x:Type DataGridRow}">
-            <Setter Property="Background" Value="{Binding Type, Converter={StaticResource TypeToColorConverter}}" />
+            <Setter Property="Background" Value="{Binding Тип, Converter={StaticResource TypeToColorConverter}}" />
         </Style>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Gray" />
+
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightSkyBlue" />
+
+        <SolidColorBrush x:Key="Br1" x:Name="Br1" Color="#FF959FFD" />
+        <SolidColorBrush x:Key="Br2" x:Name="Br2" Color="#FF959FFD" />
+        <SolidColorBrush x:Key="Br3" x:Name="Br3" Color="#FF959FFD" />
+        <SolidColorBrush x:Key="Br4" x:Name="Br4" Color="#FF959FFD" />
+        <SolidColorBrush x:Key="Br5" x:Name="Br5" Color="#FF959FFD" />
+        <SolidColorBrush x:Key="Br6" x:Name="Br6" Color="#FF959FFD" />
+        <SolidColorBrush x:Key="Br7" x:Name="Br7" Color="Red" />
+        <Style x:Key="MyButtonStyle" x:Name="MyButtonStyle">
+            <Setter Property="ToggleButton.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border   Name="Border" 
+                            CornerRadius="3" 
+                            BorderThickness="1" 
+                            BorderBrush="SteelBlue" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"                  
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ToggleButton.BorderBrush" Value="Gray"/>
+            <Setter Property="ToggleButton.BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="ToggleButton.Background" Value="#FF959FFD" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
-    <Grid Margin="0,0,2,-3" Height="860" VerticalAlignment="Top">
-        <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" Foreground="#FFBD3737" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0">
-            <Calendar.BorderBrush>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                    <GradientStop Color="#FF2C69EC" Offset="1"/>
-                </LinearGradientBrush>
-            </Calendar.BorderBrush>
+    <Grid Margin="0,0,2,-25">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1037*"/>
+            <ColumnDefinition Width="245*"/>
+        </Grid.ColumnDefinitions>
+        <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0" Height="177" Width="191" BorderBrush="#FF384D91">
             <Calendar.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFE4EAF0" Offset="0"/>
-                    <GradientStop Color="#FFECF0F4" Offset="0.16"/>
-                    <GradientStop Color="#FFFCFCFD" Offset="0.16"/>
-                    <GradientStop Color="#FF4C81CD" Offset="1"/>
+                    <GradientStop Color="#FFE4EAF0" Offset="1"/>
+                    <GradientStop Color="#FFFCFCFD" Offset="1"/>
+                    <GradientStop Color="#FF634CCD" Offset="1"/>
+                    <GradientStop Color="#FFE4EAF0" Offset="1"/>
+                    <GradientStop Color="#FF929CFF"/>
                 </LinearGradientBrush>
             </Calendar.Background>
             <Calendar.LayoutTransform>
@@ -42,59 +70,107 @@
                 </TransformGroup>
             </Calendar.LayoutTransform>
         </Calendar>
-        
-        <DataGrid x:Name="tasksGrid" AutoGenerateColumns="True" Margin="364,10,0,128" VerticalContentAlignment="Stretch" FontSize="20" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" CellEditEnding="TasksGrid_CellEditEnding"/>
-        <StackPanel Margin="0,332,0,0" Height="494" VerticalAlignment="Top" HorizontalAlignment="Left" Width="364" x:Name="ButtonGrid">
-            <ToggleButton x:Name="IdeasButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/лампочка.png" Width="81" Height="47"/>
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Идеи" FontSize="30" Width="102" Margin="50,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-            <ToggleButton x:Name="WorkButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/работа.png" Width="82" Height="44" RenderTransformOrigin="0.692,0.553"/>
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Работа" FontSize="30" Width="102" Margin="40,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-            <ToggleButton x:Name="StudyButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/учёба.png" Height="45" Width="77" />
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Учёба" FontSize="30" Width="102" Margin="50,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-            <ToggleButton x:Name="PurchasesButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/покупки.png" Width="77" Height="45" />
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Покупки" FontSize="30" Width="126" Margin="30,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-            <ToggleButton x:Name="BirthdayButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/дни_рождения.png" Height="50" Width="70" />
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Дни Рождения" FontSize="30" Width="225" Margin="10,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-            <ToggleButton x:Name="HouseholdChoresButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/домашние_дела.png" Height="50" Width="70" />
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Домашние Дела" FontSize="30" Width="258" Margin="0,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-            <ToggleButton x:Name="ImportantMatterButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Margin="10,0" Height="70">
-                <StackPanel Orientation="Horizontal" Width="344">
-                    <Image Source="Resources/важные_дела.png" Height="50" Width="74" />
-                    <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Важные Дела" FontSize="30" Width="219" Margin="10,0" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </ToggleButton>
-        </StackPanel>
-        <ComboBox x:Name="taskTypesList" HorizontalAlignment="Left" Height="32" Margin="369,766,0,0" VerticalAlignment="Top" Width="217" FontSize="20"/>
-        <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Height="32" Margin="620,766,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="216" FontSize="20"/>
-        <Label Content="Имя" HorizontalAlignment="Left" Height="24" Margin="620,737,0,0" VerticalAlignment="Top" Width="217"/>
-        <Label Content="Тип" HorizontalAlignment="Left" Height="24" Margin="369,737,0,0" VerticalAlignment="Top" Width="217"/>
-        <TextBox x:Name="infoTextBox" HorizontalAlignment="Left" Height="32" Margin="872,766,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="216" FontSize="20"/>
-        <Label Content="Информация" HorizontalAlignment="Left" Height="24" Margin="872,737,0,0" VerticalAlignment="Top" Width="217" RenderTransformOrigin="0.129,-0.562"/>
-        <Button Content="Добавить запись" HorizontalAlignment="Left" Height="24" Margin="1116,749,0,0" VerticalAlignment="Top" Width="156" Click="AddTask"/>
-        <Button Content="Удалить запись" HorizontalAlignment="Left" Height="24" Margin="1116,781,0,0" VerticalAlignment="Top" Width="156" Click="DeleteTask"/>
+
+        <DataGrid x:Name="tasksGrid" AutoGenerateColumns="True" Margin="392,10,10,128" VerticalContentAlignment="Stretch" FontSize="20" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" CellEditEnding="TasksGrid_CellEditEnding" Grid.ColumnSpan="2" Background="#FFDBDEFF"/>
+        <ScrollViewer Margin="10,334,0,24" HorizontalAlignment="Left" Width="377" VerticalScrollBarVisibility="Auto">
+            <StackPanel Height="494" VerticalAlignment="Top" HorizontalAlignment="Left" Width="367" x:Name="ButtonGrid" OpacityMask="Black">
+                <ToggleButton x:Name="IdeasButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70" >
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br1}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/лампочка.png" Width="81" Height="47"/>
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Идеи" FontSize="30" Width="102" Margin="50,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="WorkButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70">
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br2}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/работа.png" Width="82" Height="44"/>
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Работа" FontSize="30" Width="102" Margin="40,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="StudyButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70">
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br3}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/учёба.png" Height="45" Width="77" />
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Учёба" FontSize="30" Width="102" Margin="50,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="PurchasesButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70">
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br4}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/покупки.png" Width="77" Height="45" />
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Покупки" FontSize="30" Width="126" Margin="30,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="BirthdayButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70">
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br5}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/дни_рождения.png" Height="50" Width="70" />
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Дни Рождения" FontSize="30" Width="225" Margin="10,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="HouseholdChoresButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70">
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br6}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/домашние_дела.png" Height="50" Width="70" />
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Домашние Дела" FontSize="30" Width="258" Margin="0,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="ImportantMatterButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70">
+                    <ToggleButton.Resources>
+                        <Style BasedOn="{StaticResource ResourceKey=MyButtonStyle}" TargetType="ToggleButton">
+                            <Setter Property="Background" Value="{DynamicResource Br7}"/>
+                        </Style>
+                    </ToggleButton.Resources>
+
+                    <StackPanel Orientation="Horizontal" Width="344">
+                        <Image Source="Resources/важные_дела.png" Height="50" Width="74" />
+                        <TextBlock FontFamily="Yu Gothic UI Semibold" Text="Важные Дела" FontSize="30" Width="219" Margin="10,0" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </ToggleButton>
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer Margin="392,0,0,24" Grid.ColumnSpan="2" Height="104" VerticalAlignment="Bottom"  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <Grid>
+                <ComboBox x:Name="taskTypesList" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="217" FontSize="20" Margin="0,44,0,0"/>
+                <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="216" FontSize="20" Margin="236,44,0,0"/>
+                <Label Content="Имя" HorizontalAlignment="Left" Height="38" VerticalAlignment="Top" Width="218" Margin="236,6,0,0" FontSize="15" FontWeight="Bold"/>
+                <Label Content="Тип" HorizontalAlignment="Left" Height="38" VerticalAlignment="Top" Width="217" Margin="0,6,0,0" FontSize="15" FontWeight="Bold"/>
+                <TextBox x:Name="infoTextBox" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="216" FontSize="20" Margin="474,44,0,0"/>
+                <Label Content="Информация" HorizontalAlignment="Left" Height="38" VerticalAlignment="Top" Width="217"  Margin="474,6,0,0" FontSize="15" FontWeight="Bold"/>
+                <Button Content="Добавить запись" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="151" Click="AddTask" Margin="717,57,0,0" Background="#FFC9D3FF" FontSize="14"/>
+                <Button Content="Удалить запись" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="151" Click="DeleteTask" Margin="717,10,0,0" Background="#FFC9D3FF" FontSize="14"/>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -20,16 +20,16 @@ namespace DayTasks
     sealed internal class DayTask
     {
         [DataMember]
-        public TaskType Type { get; set; }
+        public TaskType Тип { get; set; }
 
         [DataMember]
-        public string Name { get; set; }
+        public string Имя { get; set; }
 
         [DataMember]
-        public string Info { get; set; }
+        public string Информация { get; set; }
 
         [DataMember]
-        public bool Сompleted { get; set; }
+        public bool Выполнено { get; set; }
     }
 
     sealed internal class TaskList

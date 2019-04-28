@@ -27,7 +27,7 @@ namespace WpfDiary
             public static List<DayTask> SelectActiveTopics()
             {
                 IEnumerable<DayTask> tasks = from dayTasks in taskList.tasks
-                                             where typesState[dayTasks.Type] == true
+                                             where typesState[dayTasks.Тип] == true
                                              select dayTasks;
                 return tasks.ToList<DayTask>();
             }
@@ -41,6 +41,7 @@ namespace WpfDiary
             CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
             tasksGrid.ItemsSource = CalendarInfo.taskList.tasks;
 
+            //загрузка типов заданий
             taskTypesList.ItemsSource = Enum.GetValues(typeof(TaskType));
             taskTypesList.SelectedIndex = 0;
 
@@ -60,10 +61,11 @@ namespace WpfDiary
             TypeColors.colors[5] = (Color)ColorConverter.ConvertFromString("#FFFADD");
             TypeColors.colors[6] = (Color)ColorConverter.ConvertFromString("#FFA8A3");
 
-            var index = 0;
+            var index = 1;
             foreach (ToggleButton button in ButtonGrid.Children)
             {
-                button.Background = new SolidColorBrush(TypeColors.colors[index]);
+                SolidColorBrush myBrush = FindResource($"Br{index}") as SolidColorBrush;
+                myBrush.Color = TypeColors.colors[index - 1];
                 index++;
             }
 
@@ -129,10 +131,10 @@ namespace WpfDiary
 
             var newTask = new DayTask
             {
-                Type = (TaskType)taskTypesList.SelectedItem,
-                Name = nameTextBox.Text,
-                Info = infoTextBox.Text,
-                Сompleted = false,
+                Тип = (TaskType)taskTypesList.SelectedItem,
+                Имя = nameTextBox.Text,
+                Информация = infoTextBox.Text,
+                Выполнено = false,
             };
 
             CalendarInfo.taskList.tasks.Add(newTask);
@@ -162,7 +164,7 @@ namespace WpfDiary
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new SolidColorBrush(TypeColors.colors[(int) value]);
+            return new SolidColorBrush(TypeColors.colors[(int)value]);
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
