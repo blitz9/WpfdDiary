@@ -1,4 +1,5 @@
 ﻿using DayTasks;
+using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +24,6 @@ namespace WpfDiary
             static public System.DateTime currentDate;
             static public TaskList taskList = new TaskList();
             static public Dictionary<TaskType, bool?> typesState = new Dictionary<TaskType, bool?>();
-            static public bool isChanged = false;
             public static List<DayTask> SelectActiveTopics()
             {
                 IEnumerable<DayTask> tasks = from dayTasks in taskList.tasks
@@ -152,10 +152,36 @@ namespace WpfDiary
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
-        //изменились ли значения
-        private void TasksGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void Window_StateChanged(object sender, EventArgs e)
         {
-            CalendarInfo.isChanged = true;
+            if (WindowState == WindowState.Minimized)
+            {
+                Hide();
+            }
+        }
+
+        private void TaskbarIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        {
+            Show();
+            WindowState = WindowState.Normal;
+        }
+
+        private void TaskbarIcon_TrayRightMouseDown(object sender, RoutedEventArgs e)
+        {
+            if (sender is TaskbarIcon icon)
+            {
+                icon.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            taskbarIcon.Visibility = Visibility.Hidden;
+        }
+
+        private void Exit_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Close();
         }
     }
 

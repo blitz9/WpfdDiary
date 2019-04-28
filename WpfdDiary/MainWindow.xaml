@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:WpfDiary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="876" Width="1290.5"
-        Closing="AppExit" Background="#FF959FFD" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        Title="Diary" Height="876" Width="1290.5"
+        Closing="AppExit" Background="#FF959FFD" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+        StateChanged="Window_StateChanged"
+        Closed="Window_Closed">
     <Window.Resources>
         <JournalEntryListConverter x:Key="JournalEntryListConverter"/>
         <local:TypeToColorConverter x:Key="TypeToColorConverter"/>
@@ -22,7 +25,7 @@
         <SolidColorBrush x:Key="Br4" x:Name="Br4" Color="#FF959FFD" />
         <SolidColorBrush x:Key="Br5" x:Name="Br5" Color="#FF959FFD" />
         <SolidColorBrush x:Key="Br6" x:Name="Br6" Color="#FF959FFD" />
-        <SolidColorBrush x:Key="Br7" x:Name="Br7" Color="Red" />
+        <SolidColorBrush x:Key="Br7" x:Name="Br7" Color="#FF959FFD" />
         <Style x:Key="MyButtonStyle" x:Name="MyButtonStyle">
             <Setter Property="ToggleButton.Template">
                 <Setter.Value>
@@ -45,12 +48,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <ContextMenu x:Key="TrayContextMenu">
+            <Label Content="Exit" MouseLeftButtonDown="Exit_MouseLeftButtonDown"/>
+        </ContextMenu>
     </Window.Resources>
     <Grid Margin="0,0,2,-25">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1037*"/>
-            <ColumnDefinition Width="245*"/>
-        </Grid.ColumnDefinitions>
+        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" TrayLeftMouseDown="TaskbarIcon_TrayLeftMouseDown" TrayRightMouseDown="TaskbarIcon_TrayRightMouseDown" ContextMenu="{DynamicResource TrayContextMenu}"/>
+        
         <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0" Height="177" Width="191" BorderBrush="#FF384D91">
             <Calendar.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -71,7 +75,7 @@
             </Calendar.LayoutTransform>
         </Calendar>
 
-        <DataGrid x:Name="tasksGrid" AutoGenerateColumns="True" Margin="392,10,10,128" VerticalContentAlignment="Stretch" FontSize="20" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" CellEditEnding="TasksGrid_CellEditEnding" Grid.ColumnSpan="2" Background="#FFDBDEFF"/>
+        <DataGrid x:Name="tasksGrid" AutoGenerateColumns="True" Margin="392,10,10,128" VerticalContentAlignment="Stretch" FontSize="20" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" Grid.ColumnSpan="2" Background="#FFDBDEFF"/>
         <ScrollViewer Margin="10,334,0,24" HorizontalAlignment="Left" Width="377" VerticalScrollBarVisibility="Auto">
             <StackPanel Height="494" VerticalAlignment="Top" HorizontalAlignment="Left" Width="367" x:Name="ButtonGrid" OpacityMask="Black">
                 <ToggleButton x:Name="IdeasButton" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Width="Auto" ClickMode="Release" Foreground="Black" Height="70" >
