@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -160,12 +159,6 @@ namespace WpfDiary
             }
         }
 
-        private void TaskbarIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
-        {
-            Show();
-            WindowState = WindowState.Normal;
-        }
-
         private void TaskbarIcon_TrayRightMouseDown(object sender, RoutedEventArgs e)
         {
             if (sender is TaskbarIcon icon)
@@ -182,6 +175,14 @@ namespace WpfDiary
         private void Exit_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Close();
+        }
+
+        private void TaskbarIcon_TrayLeftMouseUp(object sender, RoutedEventArgs e)
+        {
+            CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
+            Show();
+            WindowState = WindowState.Normal;
         }
     }
 

@@ -53,7 +53,7 @@
         </ContextMenu>
     </Window.Resources>
     <Grid Margin="0,0,2,-25">
-        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" TrayLeftMouseDown="TaskbarIcon_TrayLeftMouseDown" TrayRightMouseDown="TaskbarIcon_TrayRightMouseDown" ContextMenu="{DynamicResource TrayContextMenu}"/>
+        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" TrayLeftMouseUp="TaskbarIcon_TrayLeftMouseUp" TrayRightMouseDown="TaskbarIcon_TrayRightMouseDown" ContextMenu="{DynamicResource TrayContextMenu}"/>
         
         <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0" Height="177" Width="191" BorderBrush="#FF384D91">
             <Calendar.Background>
