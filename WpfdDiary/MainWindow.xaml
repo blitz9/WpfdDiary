@@ -6,10 +6,11 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:WpfDiary"
         mc:Ignorable="d"
-        Title="Diary" Height="876" Width="1290.5"
-        Closing="AppExit" Background="#FF959FFD" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+        Title="Дневник" Height="876" Width="1290.5"
+        Background="#FF959FFD" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
         StateChanged="Window_StateChanged"
-        Closed="Window_Closed">
+        Closing="AppExit"
+        Activated="Window_Activated">
     <Window.Resources>
         <JournalEntryListConverter x:Key="JournalEntryListConverter"/>
         <local:TypeToColorConverter x:Key="TypeToColorConverter"/>
@@ -48,12 +49,14 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
         <ContextMenu x:Key="TrayContextMenu">
-            <Label Content="Exit" MouseLeftButtonDown="Exit_MouseLeftButtonDown"/>
+            <Label Content="Добавить Задачу" MouseLeftButtonDown="Label_MouseLeftButtonDown"/>
+            <Label Content="Выйти" MouseLeftButtonDown="Exit_MouseLeftButtonDown"/>
         </ContextMenu>
     </Window.Resources>
     <Grid Margin="0,0,2,-25">
-        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" TrayLeftMouseUp="TaskbarIcon_TrayLeftMouseUp" TrayRightMouseDown="TaskbarIcon_TrayRightMouseDown" ContextMenu="{DynamicResource TrayContextMenu}"/>
+        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" TrayLeftMouseUp="TaskbarIcon_TrayLeftMouseUp" TrayRightMouseUp="TaskbarIcon_TrayRightMouseUp" ContextMenu="{DynamicResource TrayContextMenu}"/>
         
         <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0" Height="177" Width="191" BorderBrush="#FF384D91">
             <Calendar.Background>

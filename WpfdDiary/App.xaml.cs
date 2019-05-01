@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ShortTaskWindow;
 
 namespace WpfDiary
 {
@@ -13,5 +14,6 @@ namespace WpfDiary
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
+using ShortTaskWindow;
 
 namespace WpfDiary
 {
@@ -20,6 +21,7 @@ namespace WpfDiary
         //ресурсы для текущей отображаемой информации
         private static class CalendarInfo
         {
+            static public TaskWindow shortForm;
             static public System.DateTime currentDate;
             static public TaskList taskList = new TaskList();
             static public Dictionary<TaskType, bool?> typesState = new Dictionary<TaskType, bool?>();
@@ -88,6 +90,7 @@ namespace WpfDiary
         public void AppExit(object sender, CancelEventArgs e)
         {
             CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            System.Windows.Application.Current.Shutdown();
         }
 
         //изменение отображыемых видов задач
@@ -157,9 +160,10 @@ namespace WpfDiary
             {
                 Hide();
             }
+            CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
         }
 
-        private void TaskbarIcon_TrayRightMouseDown(object sender, RoutedEventArgs e)
+        private void TaskbarIcon_TrayRightMouseUp(object sender, RoutedEventArgs e)
         {
             if (sender is TaskbarIcon icon)
             {
@@ -167,14 +171,9 @@ namespace WpfDiary
             }
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            taskbarIcon.Visibility = Visibility.Hidden;
-        }
-
         private void Exit_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Close();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void TaskbarIcon_TrayLeftMouseUp(object sender, RoutedEventArgs e)
@@ -183,6 +182,19 @@ namespace WpfDiary
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
             Show();
             WindowState = WindowState.Normal;
+        }
+
+        private void Label_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            CalendarInfo.shortForm?.Close();
+            CalendarInfo.shortForm = new TaskWindow();
+            CalendarInfo.shortForm.Show();
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
         }
     }
 
