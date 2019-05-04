@@ -7,9 +7,9 @@ namespace ShortTaskWindow
     /// <summary>
     /// Логика взаимодействия для AddTaskWindow.xaml
     /// </summary>
-    public partial class TaskWindow : Window
+    public partial class ShortAddTaskWindow : Window
     {
-        public TaskWindow()
+        public ShortAddTaskWindow()
         {
             InitializeComponent();
             taskTypesList.ItemsSource = Enum.GetValues(typeof(TaskType));

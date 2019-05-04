@@ -10,6 +10,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using ShortTaskWindow;
+using System.Text;
 
 namespace WpfDiary
 {
@@ -21,15 +22,21 @@ namespace WpfDiary
         //ресурсы для текущей отображаемой информации
         private static class CalendarInfo
         {
-            static public TaskWindow shortForm;
-            static public System.DateTime currentDate;
-            static public TaskList taskList = new TaskList();
-            static public Dictionary<TaskType, bool?> typesState = new Dictionary<TaskType, bool?>();
+            private static ShortTaskWindow.ShortAddTaskWindow shortForm;
+            private static System.DateTime currentDate;
+            private static TaskList taskList = new TaskList();
+            private static Dictionary<TaskType, bool?> typesState = new Dictionary<TaskType, bool?>();
+
+            public static ShortAddTaskWindow ShortForm { get => shortForm; set => shortForm = value; }
+            public static DateTime CurrentDate { get => currentDate; set => currentDate = value; }
+            internal static TaskList TaskList { get => taskList; set => taskList = value; }
+            internal static Dictionary<TaskType, bool?> TypesState { get => typesState; set => typesState = value; }
+
             public static List<DayTask> SelectActiveTopics()
             {
-                IEnumerable<DayTask> tasks = from dayTasks in taskList.tasks
-                                             where typesState[dayTasks.Тип] == true
-                                             select dayTasks;
+                var tasks = from dayTasks in TaskList.tasks
+                            where TypesState[dayTasks.Тип] == true
+                            select dayTasks;
                 return tasks.ToList<DayTask>();
             }
         }
@@ -38,9 +45,9 @@ namespace WpfDiary
         public MainWindow()
         {
             InitializeComponent();
-            CalendarInfo.currentDate = calendar.SelectedDate ?? calendar.DisplayDate;
-            CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
-            tasksGrid.ItemsSource = CalendarInfo.taskList.tasks;
+            CalendarInfo.CurrentDate = calendar.SelectedDate ?? calendar.DisplayDate;
+            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
+            tasksGrid.ItemsSource = CalendarInfo.TaskList.tasks;
 
             //загрузка типов заданий
             taskTypesList.ItemsSource = Enum.GetValues(typeof(TaskType));
@@ -65,31 +72,31 @@ namespace WpfDiary
             var index = 1;
             foreach (ToggleButton button in ButtonGrid.Children)
             {
-                SolidColorBrush myBrush = FindResource($"Br{index}") as SolidColorBrush;
+                var myBrush = FindResource($"Br{index}") as SolidColorBrush;
                 myBrush.Color = TypeColors.colors[index - 1];
                 index++;
             }
 
             foreach (TaskType type in Enum.GetValues(typeof(TaskType)))
             {
-                CalendarInfo.typesState[type] = true;
+                CalendarInfo.TypesState[type] = true;
             }
         }
 
         //событие смены даты
         private void DatesChanged(object sender, RoutedEventArgs e)
         {
-            CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             var date = (System.Windows.Controls.Calendar)sender;
-            CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName((System.DateTime)date.SelectedDate));
+            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName((System.DateTime)date.SelectedDate));
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
-            CalendarInfo.currentDate = (System.DateTime)date.SelectedDate;
+            CalendarInfo.CurrentDate = (System.DateTime)date.SelectedDate;
         }
 
         //сохранение при выходе
         public void AppExit(object sender, CancelEventArgs e)
         {
-            CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             System.Windows.Application.Current.Shutdown();
         }
 
@@ -101,25 +108,25 @@ namespace WpfDiary
                 switch (button.Name)
                 {
                     case "IdeasButton":
-                        CalendarInfo.typesState[TaskType.Идеи] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Идеи] = !button.IsChecked;
                         break;
                     case "WorkButton":
-                        CalendarInfo.typesState[TaskType.Работа] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Работа] = !button.IsChecked;
                         break;
                     case "StudyButton":
-                        CalendarInfo.typesState[TaskType.Учёба] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Учёба] = !button.IsChecked;
                         break;
                     case "PurchasesButton":
-                        CalendarInfo.typesState[TaskType.Покупки] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Покупки] = !button.IsChecked;
                         break;
                     case "BirthdayButton":
-                        CalendarInfo.typesState[TaskType.Дни_Рождения] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Дни_Рождения] = !button.IsChecked;
                         break;
                     case "HouseholdChoresButton":
-                        CalendarInfo.typesState[TaskType.Домашние_Дела] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Домашние_Дела] = !button.IsChecked;
                         break;
                     case "ImportantMatterButton":
-                        CalendarInfo.typesState[TaskType.Важные_Дела] = !button.IsChecked;
+                        CalendarInfo.TypesState[TaskType.Важные_Дела] = !button.IsChecked;
                         break;
                 }
 
@@ -139,7 +146,7 @@ namespace WpfDiary
                 Выполнено = false,
             };
 
-            CalendarInfo.taskList.tasks.Add(newTask);
+            CalendarInfo.TaskList.tasks.Add(newTask);
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
@@ -149,7 +156,7 @@ namespace WpfDiary
             var selectedTasks = tasksGrid.SelectedItems;
             foreach (var elem in selectedTasks)
             {
-                CalendarInfo.taskList.tasks.RemoveAll(x => x == elem);
+                CalendarInfo.TaskList.tasks.RemoveAll(x => x == elem);
             }
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
@@ -160,7 +167,7 @@ namespace WpfDiary
             {
                 Hide();
             }
-            CalendarInfo.taskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
         }
 
         private void TaskbarIcon_TrayRightMouseUp(object sender, RoutedEventArgs e)
@@ -173,12 +180,13 @@ namespace WpfDiary
 
         private void Exit_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             System.Windows.Application.Current.Shutdown();
         }
 
         private void TaskbarIcon_TrayLeftMouseUp(object sender, RoutedEventArgs e)
         {
-            CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
             Show();
             WindowState = WindowState.Normal;
@@ -186,15 +194,31 @@ namespace WpfDiary
 
         private void Label_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            CalendarInfo.shortForm?.Close();
-            CalendarInfo.shortForm = new TaskWindow();
-            CalendarInfo.shortForm.Show();
+            CalendarInfo.ShortForm?.Close();
+            CalendarInfo.ShortForm = new ShortTaskWindow.ShortAddTaskWindow();
+            CalendarInfo.ShortForm.Show();
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            CalendarInfo.taskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.currentDate));
+            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
+        }
+
+        private void ShowPopUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName((System.DateTime)System.DateTime.Today));
+            StringBuilder info = new StringBuilder();
+            foreach (var task in CalendarInfo.TaskList.tasks)
+            {
+                info.Append($"{task.Имя}\n");
+            }
+            taskbarIcon.ShowBalloonTip("Задачи на сегодня", info.ToString(), BalloonIcon.Info);
         }
     }
 

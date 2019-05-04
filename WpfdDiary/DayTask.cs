@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -7,13 +8,13 @@ namespace DayTasks
 {
     enum TaskType
     {
-        Идеи=0,
-        Работа=1,
-        Учёба=2,
-        Покупки=3,
-        Дни_Рождения=4,
-        Домашние_Дела=5,
-        Важные_Дела=6,
+        Идеи = 0,
+        Работа = 1,
+        Учёба = 2,
+        Покупки = 3,
+        Дни_Рождения = 4,
+        Домашние_Дела = 5,
+        Важные_Дела = 6,
     }
 
     [DataContract]
@@ -39,9 +40,15 @@ namespace DayTasks
         //сохранить задачи текущего дня в json формат
         public void SaveTaskList(string fileName)
         {
+            var dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\WpfdDiaryTasks";
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             var jsonFormatter = new DataContractJsonSerializer(typeof(List<DayTask>));
 
-            using (var fs = new FileStream(fileName, FileMode.Create))
+            using (var fs = new FileStream(dir + @"\" + fileName, FileMode.Create))
             {
                 jsonFormatter.WriteObject(fs, tasks);
             }
@@ -50,9 +57,15 @@ namespace DayTasks
         //загрузить задачи для текущего дня из json файла
         public void LoadTaskList(string fileName)
         {
+            var dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\WpfdDiaryTasks";
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             var jsonFormatter = new DataContractJsonSerializer(typeof(List<DayTask>));
 
-            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(dir + @"\" + fileName, FileMode.OpenOrCreate))
             {
                 try
                 {

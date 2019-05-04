@@ -10,7 +10,8 @@
         Background="#FF959FFD" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
         StateChanged="Window_StateChanged"
         Closing="AppExit"
-        Activated="Window_Activated">
+        Activated="Window_Activated"
+        Deactivated="Window_Deactivated">
     <Window.Resources>
         <JournalEntryListConverter x:Key="JournalEntryListConverter"/>
         <local:TypeToColorConverter x:Key="TypeToColorConverter"/>
@@ -49,14 +50,17 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <ContextMenu x:Key="TrayContextMenu">
-            <Label Content="Добавить Задачу" MouseLeftButtonDown="Label_MouseLeftButtonDown"/>
-            <Label Content="Выйти" MouseLeftButtonDown="Exit_MouseLeftButtonDown"/>
+            <Label Content="Показать/Скрыть Задачи" MouseLeftButtonDown="ShowPopUp"  Width="150" Height="30"/>
+            <Label Content="Добавить Задачу" MouseLeftButtonDown="Label_MouseLeftButtonDown" Width="150" Height="30"/>
+            <Label Content="Выйти" MouseLeftButtonDown="Exit_MouseLeftButtonDown" Width="150" Height="30"/>
         </ContextMenu>
+
     </Window.Resources>
     <Grid Margin="0,0,2,-25">
-        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" TrayLeftMouseUp="TaskbarIcon_TrayLeftMouseUp" TrayRightMouseUp="TaskbarIcon_TrayRightMouseUp" ContextMenu="{DynamicResource TrayContextMenu}"/>
+        <tb:TaskbarIcon x:Name="taskbarIcon" Visibility="Visible" ToolTipText="Дневник" IconSource="/Resources/icon.ico" 
+                        TrayLeftMouseUp="TaskbarIcon_TrayLeftMouseUp" TrayRightMouseUp="TaskbarIcon_TrayRightMouseUp" ContextMenu="{DynamicResource TrayContextMenu}"/>
         
         <Calendar x:Name="calendar" FontFamily="Yu Gothic UI Semibold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-2,0,0" Height="177" Width="191" BorderBrush="#FF384D91">
             <Calendar.Background>
