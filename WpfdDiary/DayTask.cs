@@ -34,7 +34,8 @@ namespace DayTasks
 
         public override string ToString()
         {
-            return $"{Тип} - {Заголовок} : {Информация} ({Выполнено})";
+            var state = Выполнено ? "Выполнено" : "Не выполено";
+            return $"{Тип} - {Заголовок} : {Информация} ({state})";
         }       
     }
 
