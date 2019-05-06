@@ -22,7 +22,7 @@ namespace ShortTaskWindow
             var newTask = new DayTask
             {
                 Тип = (TaskType)taskTypesList.SelectedItem,
-                Имя = nameTextBox.Text,
+                Заголовок = nameTextBox.Text,
                 Информация = infoTextBox.Text,
                 Выполнено = false,
             };

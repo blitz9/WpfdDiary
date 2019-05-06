@@ -84,9 +84,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ComponentPro.Common, Version=7.0.40.226, Culture=neutral, PublicKeyToken=0efede2d78b28dff, processorArchitecture=MSIL">
-      <HintPath>..\packages\ComponentPro.Common.7.0.226.143\lib\net40\ComponentPro.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>

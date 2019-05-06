@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using ShortTaskWindow;
 using System.Text;
+using System.Windows.Controls;
 
 namespace WpfDiary
 {
@@ -45,6 +46,7 @@ namespace WpfDiary
         public MainWindow()
         {
             InitializeComponent();
+            taskbarIcon.PopupActivation = PopupActivationMode.LeftClick;
             CalendarInfo.CurrentDate = calendar.SelectedDate ?? calendar.DisplayDate;
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             tasksGrid.ItemsSource = CalendarInfo.TaskList.tasks;
@@ -141,7 +143,7 @@ namespace WpfDiary
             var newTask = new DayTask
             {
                 Тип = (TaskType)taskTypesList.SelectedItem,
-                Имя = nameTextBox.Text,
+                Заголовок = nameTextBox.Text,
                 Информация = infoTextBox.Text,
                 Выполнено = false,
             };
@@ -161,6 +163,7 @@ namespace WpfDiary
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
+        //Свернуть окно
         private void Window_StateChanged(object sender, EventArgs e)
         {
             if (WindowState == WindowState.Minimized)
@@ -170,6 +173,7 @@ namespace WpfDiary
             CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
         }
 
+        //Открытие меню трея
         private void TaskbarIcon_TrayRightMouseUp(object sender, RoutedEventArgs e)
         {
             if (sender is TaskbarIcon icon)
@@ -178,12 +182,14 @@ namespace WpfDiary
             }
         }
 
+        //Закрытие приложения
         private void Exit_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             System.Windows.Application.Current.Shutdown();
         }
 
+        //Развернуть окно из трея
         private void TaskbarIcon_TrayLeftMouseUp(object sender, RoutedEventArgs e)
         {
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
@@ -192,6 +198,7 @@ namespace WpfDiary
             WindowState = WindowState.Normal;
         }
 
+        //Показать коротку форму добавления задачи
         private void Label_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             CalendarInfo.ShortForm?.Close();
@@ -199,26 +206,46 @@ namespace WpfDiary
             CalendarInfo.ShortForm.Show();
         }
 
+        //Загрузка при активации окна
         private void Window_Activated(object sender, EventArgs e)
         {
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
+            CalendarInfo.CurrentDate = calendar.SelectedDate ?? calendar.DisplayDate;
         }
 
+        //Сохранение при диактивации окна
         private void Window_Deactivated(object sender, EventArgs e)
         {
             CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
         }
 
-        private void ShowPopUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //Загрузка текста про задачи на текущий день
+        private void TodayTaskPopUp_Opened(object sender, EventArgs e)
         {
-            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName((System.DateTime)System.DateTime.Today));
-            StringBuilder info = new StringBuilder();
+            CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(System.DateTime.Today));
+
+            var popup = FindResource("TodayTaskPopUp") as Popup;
+            var stackPanel = new StackPanel();
+
+            StringBuilder stringBuilder = new StringBuilder();
+
             foreach (var task in CalendarInfo.TaskList.tasks)
             {
-                info.Append($"{task.Имя}\n");
+                stringBuilder.Append(task+"\n");
             }
-            taskbarIcon.ShowBalloonTip("Задачи на сегодня", info.ToString(), BalloonIcon.Info);
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+
+            var textBlock = new TextBlock();
+            textBlock.Inlines.Add(stringBuilder.ToString());
+            textBlock.FontSize = 14;
+            textBlock.FontStyle = FontStyles.Italic;
+
+            stackPanel.Children.Add(textBlock);
+            stackPanel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDBDEFF"));
+
+            popup.Child = stackPanel;
+            //text.Text = "faffafa";
         }
     }
 

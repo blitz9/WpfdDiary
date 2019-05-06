@@ -24,13 +24,18 @@ namespace DayTasks
         public TaskType Тип { get; set; }
 
         [DataMember]
-        public string Имя { get; set; }
+        public string Заголовок { get; set; }
 
         [DataMember]
         public string Информация { get; set; }
 
         [DataMember]
         public bool Выполнено { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Тип} - {Заголовок} : {Информация} ({Выполнено})";
+        }       
     }
 
     sealed internal class TaskList
