@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+
 using DayTasks;
 
 namespace ShortTaskWindow
@@ -9,15 +10,15 @@ namespace ShortTaskWindow
     /// </summary>
     public partial class ShortAddTaskWindow : Window
     {
-        public ShortAddTaskWindow()
+        public ShortAddTaskWindow ()
         {
             InitializeComponent();
             taskTypesList.ItemsSource = Enum.GetValues(typeof(TaskType));
             taskTypesList.SelectedIndex = 0;
-            selectedData.SelectedDate = System.DateTime.Today;
+            selectedData.SelectedDate = DateTime.Today;
         }
 
-        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        private void AddTaskButton_Click (object sender, RoutedEventArgs e)
         {
             var newTask = new DayTask
             {
@@ -27,10 +28,10 @@ namespace ShortTaskWindow
                 Выполнено = false,
             };
 
-            DateTime data = (DateTime)selectedData.SelectedDate;
-            TaskList tasks = new TaskList();
+            var data = (DateTime)selectedData.SelectedDate;
+            var tasks = new TaskList();
             tasks.LoadTaskList(TaskList.DateToJsonFileName(data));
-            tasks.tasks.Add(newTask);
+            tasks.Tasks.Add(newTask);
             tasks.SaveTaskList(TaskList.DateToJsonFileName(data));
         }
     }

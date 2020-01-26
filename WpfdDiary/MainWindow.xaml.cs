@@ -1,17 +1,20 @@
-﻿using DayTasks;
-using Hardcodet.Wpf.TaskbarNotification;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
+
+using DayTasks;
+
+using Hardcodet.Wpf.TaskbarNotification;
+
 using ShortTaskWindow;
-using System.Text;
-using System.Windows.Controls;
 
 namespace WpfDiary
 {
@@ -23,19 +26,14 @@ namespace WpfDiary
         //ресурсы для текущей отображаемой информации
         private static class CalendarInfo
         {
-            private static ShortTaskWindow.ShortAddTaskWindow shortForm;
-            private static System.DateTime currentDate;
-            private static TaskList taskList = new TaskList();
-            private static Dictionary<TaskType, bool?> typesState = new Dictionary<TaskType, bool?>();
+            public static ShortAddTaskWindow ShortForm { get; set; }
+            public static DateTime CurrentDate { get; set; }
+            internal static TaskList TaskList { get; set; } = new TaskList();
+            internal static Dictionary<TaskType, bool?> TypesState { get; set; } = new Dictionary<TaskType, bool?>();
 
-            public static ShortAddTaskWindow ShortForm { get => shortForm; set => shortForm = value; }
-            public static DateTime CurrentDate { get => currentDate; set => currentDate = value; }
-            internal static TaskList TaskList { get => taskList; set => taskList = value; }
-            internal static Dictionary<TaskType, bool?> TypesState { get => typesState; set => typesState = value; }
-
-            public static List<DayTask> SelectActiveTopics()
+            public static List<DayTask> SelectActiveTopics ()
             {
-                var tasks = from dayTasks in TaskList.tasks
+                var tasks = from dayTasks in TaskList.Tasks
                             where TypesState[dayTasks.Тип] == true
                             select dayTasks;
                 return tasks.ToList<DayTask>();
@@ -43,13 +41,13 @@ namespace WpfDiary
         }
 
         //инициальзация объектов и назначение обработчиков событий
-        public MainWindow()
+        public MainWindow ()
         {
             InitializeComponent();
             taskbarIcon.PopupActivation = PopupActivationMode.LeftClick;
             CalendarInfo.CurrentDate = calendar.SelectedDate ?? calendar.DisplayDate;
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
-            tasksGrid.ItemsSource = CalendarInfo.TaskList.tasks;
+            tasksGrid.ItemsSource = CalendarInfo.TaskList.Tasks;
 
             //загрузка типов заданий
             taskTypesList.ItemsSource = Enum.GetValues(typeof(TaskType));
@@ -62,20 +60,11 @@ namespace WpfDiary
                 button.Click += PressedTypeButton;
             }
 
-            //Здесь вставтлять свои цвета
-            TypeColors.colors[0] = (Color)ColorConverter.ConvertFromString("#CDABFF");
-            TypeColors.colors[1] = (Color)ColorConverter.ConvertFromString("#DEF7FE");
-            TypeColors.colors[2] = (Color)ColorConverter.ConvertFromString("#E7ECFF");
-            TypeColors.colors[3] = (Color)ColorConverter.ConvertFromString("#C3FBD8");
-            TypeColors.colors[4] = (Color)ColorConverter.ConvertFromString("#FDEED9");
-            TypeColors.colors[5] = (Color)ColorConverter.ConvertFromString("#FFFADD");
-            TypeColors.colors[6] = (Color)ColorConverter.ConvertFromString("#FFA8A3");
-
             var index = 1;
             foreach (ToggleButton button in ButtonGrid.Children)
             {
                 var myBrush = FindResource($"Br{index}") as SolidColorBrush;
-                myBrush.Color = TypeColors.colors[index - 1];
+                myBrush.Color = TaskTypeColors.colors[index - 1];
                 index++;
             }
 
@@ -86,7 +75,7 @@ namespace WpfDiary
         }
 
         //событие смены даты
-        private void DatesChanged(object sender, RoutedEventArgs e)
+        private void DatesChanged (object sender, RoutedEventArgs e)
         {
             CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             var date = (System.Windows.Controls.Calendar)sender;
@@ -96,14 +85,14 @@ namespace WpfDiary
         }
 
         //сохранение при выходе
-        public void AppExit(object sender, CancelEventArgs e)
+        public void AppExit (object sender, CancelEventArgs e)
         {
             CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         //изменение отображыемых видов задач
-        public void PressedTypeButton(Object sender, EventArgs e)
+        public void PressedTypeButton (object sender, EventArgs e)
         {
             if (sender is ToggleButton button)
             {
@@ -137,9 +126,8 @@ namespace WpfDiary
         }
 
         //добавить задачу
-        private void AddTask(object sender, RoutedEventArgs e)
+        private void AddTask (object sender, RoutedEventArgs e)
         {
-
             var newTask = new DayTask
             {
                 Тип = (TaskType)taskTypesList.SelectedItem,
@@ -148,23 +136,23 @@ namespace WpfDiary
                 Выполнено = false,
             };
 
-            CalendarInfo.TaskList.tasks.Add(newTask);
+            CalendarInfo.TaskList.Tasks.Add(newTask);
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
         //удалить выделенные задачи
-        private void DeleteTask(object sender, RoutedEventArgs e)
+        private void DeleteTask (object sender, RoutedEventArgs e)
         {
             var selectedTasks = tasksGrid.SelectedItems;
             foreach (var elem in selectedTasks)
             {
-                CalendarInfo.TaskList.tasks.RemoveAll(x => x == elem);
+                CalendarInfo.TaskList.Tasks.RemoveAll(x => x == elem);
             }
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics() ?? new List<DayTask>();
         }
 
         //Свернуть окно
-        private void Window_StateChanged(object sender, EventArgs e)
+        private void Window_StateChanged (object sender, EventArgs e)
         {
             if (WindowState == WindowState.Minimized)
             {
@@ -174,7 +162,7 @@ namespace WpfDiary
         }
 
         //Открытие меню трея
-        private void TaskbarIcon_TrayRightMouseUp(object sender, RoutedEventArgs e)
+        private void TaskbarIcon_TrayRightMouseUp (object sender, RoutedEventArgs e)
         {
             if (sender is TaskbarIcon icon)
             {
@@ -183,14 +171,14 @@ namespace WpfDiary
         }
 
         //Закрытие приложения
-        private void Exit_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Exit_MouseLeftButtonDown (object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             System.Windows.Application.Current.Shutdown();
         }
 
         //Развернуть окно из трея
-        private void TaskbarIcon_TrayLeftMouseUp(object sender, RoutedEventArgs e)
+        private void TaskbarIcon_TrayLeftMouseUp (object sender, RoutedEventArgs e)
         {
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
@@ -199,7 +187,7 @@ namespace WpfDiary
         }
 
         //Показать коротку форму добавления задачи
-        private void Label_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Label_MouseLeftButtonDown (object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             CalendarInfo.ShortForm?.Close();
             CalendarInfo.ShortForm = new ShortTaskWindow.ShortAddTaskWindow();
@@ -207,7 +195,7 @@ namespace WpfDiary
         }
 
         //Загрузка при активации окна
-        private void Window_Activated(object sender, EventArgs e)
+        private void Window_Activated (object sender, EventArgs e)
         {
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
             tasksGrid.ItemsSource = CalendarInfo.SelectActiveTopics();
@@ -215,26 +203,28 @@ namespace WpfDiary
         }
 
         //Сохранение при диактивации окна
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
-        }
+        private void Window_Deactivated (object sender, EventArgs e) => CalendarInfo.TaskList.SaveTaskList(TaskList.DateToJsonFileName(CalendarInfo.CurrentDate));
 
         //Загрузка текста про задачи на текущий день
-        private void TodayTaskPopUp_Opened(object sender, EventArgs e)
+        private void TodayTaskPopUp_Opened (object sender, EventArgs e)
         {
             CalendarInfo.TaskList.LoadTaskList(TaskList.DateToJsonFileName(System.DateTime.Today));
 
             var popup = FindResource("TodayTaskPopUp") as Popup;
             var stackPanel = new StackPanel();
 
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
-            foreach (var task in CalendarInfo.TaskList.tasks)
+            foreach (var task in CalendarInfo.TaskList.Tasks)
             {
-                stringBuilder.Append(task+"\n");
+                stringBuilder.Append(task).Append('\n');
             }
-            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+
+
+            if (stringBuilder.Length > 0)
+            {
+                stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            }
 
             var textBlock = new TextBlock();
             textBlock.Inlines.Add(stringBuilder.ToString());
@@ -245,25 +235,29 @@ namespace WpfDiary
             stackPanel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDBDEFF"));
 
             popup.Child = stackPanel;
-            //text.Text = "faffafa";
         }
     }
 
     //раскрашивание строки в зависимости от типов
     public class TypeToColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return new SolidColorBrush(TypeColors.colors[(int)value]);
-        }
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+        public object Convert (object value, Type targetType, object parameter, CultureInfo culture) => new SolidColorBrush(TaskTypeColors.colors[(int)value]);
+        public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture) => throw new Exception("The method or operation is not implemented.");
     }
 
-    static public class TypeColors
+    public static class TaskTypeColors
     {
-        static public Color[] colors = new Color[7];
+        public static Color[] colors = new Color[7];
+
+        static TaskTypeColors ()
+        {
+            colors[0] = (Color)ColorConverter.ConvertFromString("#CDABFF");
+            colors[1] = (Color)ColorConverter.ConvertFromString("#DEF7FE");
+            colors[2] = (Color)ColorConverter.ConvertFromString("#E7ECFF");
+            colors[3] = (Color)ColorConverter.ConvertFromString("#C3FBD8");
+            colors[4] = (Color)ColorConverter.ConvertFromString("#FDEED9");
+            colors[5] = (Color)ColorConverter.ConvertFromString("#FFFADD");
+            colors[6] = (Color)ColorConverter.ConvertFromString("#FFA8A3");
+        }
     }
 }
